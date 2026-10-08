@@ -1,5 +1,7 @@
 # Codex Kimi Bridge
 
+**English** | [简体中文：安装、分支特点与委派示例](README.zh-CN.md)
+
 Local Codex plugin and MCP bridge for delegating implementation tasks to Kimi Code while Codex remains the planner and reviewer.
 
 This community fork adds configurable auto-start for modern Kimi, hidden background
@@ -7,6 +9,19 @@ startup on Windows, and consistent token-directory handling. It is based on
 [ximenchuifeng/codex-kimi-bridge](https://github.com/ximenchuifeng/codex-kimi-bridge)
 and retains the original MIT license and author attribution. The changes have
 been submitted upstream in [PR #1](https://github.com/ximenchuifeng/codex-kimi-bridge/pull/1).
+
+## What This Fork Adds
+
+- **Automatic startup for modern Kimi:** the plugin defaults to `kimi web --no-open --port 58627`, tested with Kimi 2.1.1. The first task call starts the server when needed.
+- **Windows background startup:** detached execution with `windowsHide` keeps the startup console hidden; the default arguments also prevent a browser from opening automatically.
+- **Configurable startup arguments:** `KIMI_SERVER_ARGS` accepts a validated JSON argument array. An omitted or blank value preserves the legacy `server run --keep-alive` command.
+- **Consistent authentication directories:** an empty `KIMI_CODE_HOME` resolves to `~/.kimi-code` for both the bridge and the spawned Kimi process.
+- **PowerShell startup diagnostics:** executable paths and arguments containing spaces or quotes are formatted for the platform's shell.
+- **Chinese onboarding:** the [Chinese guide](README.zh-CN.md) includes installation steps, configuration examples, delegation prompts, and troubleshooting.
+
+The fork retains the upstream delegation, review-package, and session-recovery
+workflow. A healthy server is reused, and `kimi_bridge_status` stays read-only.
+The tracked bundle lets users install from Git without a TypeScript build.
 
 ## Prerequisites
 
@@ -41,7 +56,27 @@ Open a new Codex task after installation so Codex loads the plugin tools. Confir
 codex plugin list | rg 'kimi-delegate|codex-kimi-bridge-local'
 ```
 
+## Update Plugin Configuration
+
+Edit `plugins/kimi-delegate/.mcp.json` in the checkout registered as your local
+marketplace. Once current delegated tasks have finished, remove the installed
+plugin and its local cache, then reinstall from that marketplace:
+
+```text
+codex plugin remove kimi-delegate@codex-kimi-bridge-local
+codex plugin add kimi-delegate@codex-kimi-bridge-local
+```
+
+Open a new Codex task afterward. Configuration-only changes do not require a
+TypeScript build or an external cachebuster script. Check `codex plugin --help`
+if your installed CLI uses different plugin commands.
+
 ## Development
+
+The validator and cachebuster script paths below are examples from the upstream
+developer's environment. These optional scripts are not included in this
+repository; replace their paths with your own tools if available. They are not
+required for first-time installation or configuration updates.
 
 ```bash
 pnpm install
