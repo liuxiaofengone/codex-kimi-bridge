@@ -2,6 +2,12 @@
 
 Local Codex plugin and MCP bridge for delegating implementation tasks to Kimi Code while Codex remains the planner and reviewer.
 
+This community fork adds configurable auto-start for modern Kimi, hidden background
+startup on Windows, and consistent token-directory handling. It is based on
+[ximenchuifeng/codex-kimi-bridge](https://github.com/ximenchuifeng/codex-kimi-bridge)
+and retains the original MIT license and author attribution. The changes have
+been submitted upstream in [PR #1](https://github.com/ximenchuifeng/codex-kimi-bridge/pull/1).
+
 ## Prerequisites
 
 - Git
@@ -14,9 +20,18 @@ The plugin includes a tracked MCP server bundle. First-time installation does no
 ## Install From Git
 
 ```bash
-git clone https://github.com/ximenchuifeng/codex-kimi-bridge.git
+git clone https://github.com/liuxiaofengone/codex-kimi-bridge.git
 cd codex-kimi-bridge
 codex plugin marketplace add "$PWD"
+codex plugin add kimi-delegate@codex-kimi-bridge-local
+```
+
+In Windows PowerShell:
+
+```powershell
+git clone https://github.com/liuxiaofengone/codex-kimi-bridge.git
+Set-Location codex-kimi-bridge
+codex plugin marketplace add (Get-Location).Path
 codex plugin add kimi-delegate@codex-kimi-bridge-local
 ```
 
